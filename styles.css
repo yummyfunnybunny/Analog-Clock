@@ -1,0 +1,118 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+  font-family: Gotham Rounded, san serif;
+  font-weight: bold;
+}
+
+body {
+  background: linear-gradient(to right, hsl(200, 100%, 75%), hsla(200, 100%, 50%, 0.452));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+/* the overflow: hidden gets rid of the scroll bar that was generated */
+  overflow: hidden;
+}
+
+.clock {
+  width: 300px;
+  height: 300px;
+  background-color: rgba(255,255,255,.8);
+  border-radius: 50%;
+  border: 2px solid black;
+  position: relative;
+}
+
+.clock .number {
+  /* note the naming convention for CSS variables: --[name] */
+  --rotation: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  /* activate the background color below to better visualize the
+  what the transform is doing to the numbers */
+  /* background-color: rgba(255, 0, 0, 0.025); */
+  transform: rotate(var(--rotation));
+  font-size: 1.5rem;
+}
+
+
+/* 
+- each of the below classes inherits the --rotation variable initialized above
+- '.number 12' does not need to be manually set because it is already where it
+    needs to be
+*/
+.clock .number1 {--rotation: 30deg; }
+.clock .number2 {--rotation: 60deg; }
+.clock .number3 {--rotation: 90deg; }
+.clock .number4 {--rotation: 120deg; }
+.clock .number5 {--rotation: 150deg; }
+.clock .number6 {--rotation: 180deg; }
+.clock .number7 {--rotation: 210deg; }
+.clock .number8 {--rotation: 240deg; }
+.clock .number9 {--rotation: 270deg; }
+.clock .number10 {--rotation: 300deg; }
+.clock .number11 {--rotation: 330deg; }
+
+.clock .hand {
+  /* this rotation variable will be set using javascript */
+  --rotation: 0;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  background-color: black;
+  border: 1px solid white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  /* the z-index ensures that the hand is always above the clock numbers  */
+  z-index: 10; 
+  /* 
+  whats happening in the transform below:
+  -translateX(-50%) moves the hand over 50% of its width to the left in 
+    order to center it in the circle
+  - the rotate portion cupped with the --rotation variable is what
+    is calculated in javascript to set the rotation of the hand
+  - the 'calc * 1deg' simply translates the unit of the rotation variable
+    from a number to degrees so the rotation actually occurs 
+  */
+  transform: translateX(-50%) rotate(calc(var(--rotation) * 1deg));
+  /* the below transform tells where the transformations will occur */
+  transform-origin: bottom;
+
+}
+
+/* 
+- '::after' simply creates a new element to the DOM that we did not specify in 
+  our HTML file
+*/
+.clock::after {
+  content:'';
+  position: absolute;
+  background-color: black;
+  z-index: 11;
+  width: 15px;
+  height: 15px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+}
+
+.clock .hand.second {
+  width: 3px;
+  height: 45%;
+  background-color: red;
+}
+
+.clock .hand.minute {
+  width: 7px;
+  height: 40%;
+  background-color: black;
+}
+
+.clock .hand.hour {
+  width: 10px;
+  height: 35%;
+  background-color: black;
+}
